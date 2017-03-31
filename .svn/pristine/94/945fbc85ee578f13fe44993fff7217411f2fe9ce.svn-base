@@ -1,0 +1,39 @@
+/**
+ * TCSS 305 - Autumn 2016
+ * Assignment 6a - tetris
+ */
+
+package view;
+
+import java.awt.EventQueue;
+
+/**
+ * Driver-class contains main method which will start the program.
+ * @author Dat Ly datly@uw.edu
+ * @version 12/02/2016
+ *
+ */
+public final class TetrisMain {
+    
+    /** 
+     * Private constructor for drvier-class.
+     */
+    private TetrisMain() {
+        
+        // do nothing for now
+    }
+    
+    /**
+     * Main method that will kick-off the Tetris game.
+     * @param theArgs command line.
+     */
+    public static void main(final String[] theArgs) {
+        
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new TetrisGUI().start();
+            }
+        });
+    }
+}

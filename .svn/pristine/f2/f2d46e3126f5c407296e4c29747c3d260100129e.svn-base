@@ -1,0 +1,209 @@
+/**
+ * TCSS 305 - Autumn 2016
+ * Assignment 6a - tetris
+ */
+
+package view;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
+
+import model.Board;
+
+/**
+ * Class represent the menu of the project.
+ * @author Dat Ly datly@uw.edu
+ * @version 12/02/2016
+ *
+ */
+public class TetrisMenuBar extends JMenuBar implements Observer {
+    
+    /** Auto generate serialVersion. */
+    private static final long serialVersionUID = -9002583652898856311L;
+    /** Name of the New Game button. */
+    private static final String NEW_GAME = "New Game";
+    /** Name of the End Game button. */
+    private static final String END_GAME = "End Game";
+    /** Name of the Quit button. */
+    private static final String QUIT = "Quit";
+    /** Name of the About button. */
+    private static final String ABOUT = "About...";
+    /**
+     * Reference to Board class. 
+     */
+    private final Board myBoard;
+    /**
+     * Option menu for the user to change size of Game's Board.
+     */
+    private final JMenu myOptions;
+    /**
+     * Button group that make sure one button select at a time.
+     */
+    private final ButtonGroup myButtonGroup;
+    
+    /**
+     * Constructor initialize instance fields.
+     * @param theFrame Container which hold all the components.
+     * @param theBoard represent Board class.
+     */
+    public TetrisMenuBar(final JFrame theFrame, final Board theBoard) {
+        
+        super();
+        myBoard = theBoard;
+        myOptions = new JMenu("Options");
+        myButtonGroup = new ButtonGroup();
+        setUpMenu(theFrame);
+    }
+    
+    /**
+     * Command method that will set up the view for the MenuBar.
+     * @param theFrame container of the game.
+     */
+    private void setUpMenu(final JFrame theFrame) {
+        
+        final JMenu menu = new JMenu("Menu");
+        menu.add(newGame(NEW_GAME));
+        menu.add(endGame(END_GAME));
+        menu.addSeparator();
+        menu.add(quitAction(QUIT, theFrame));
+        
+        final JMenu help = new JMenu("Help");
+        help.add(aboutAction(ABOUT));
+        
+        menu.setMnemonic(KeyEvent.VK_M);
+        myOptions.setMnemonic(KeyEvent.VK_O);
+        help.setMnemonic(KeyEvent.VK_H);
+        
+        add(menu);  
+        add(myOptions);
+        add(help);
+        
+    }
+    
+    /**
+     * Action to start new game.
+     * @param theString name of the Action.
+     * @return AbstractAction.
+     */
+    private Action newGame(final String theString) {
+        
+        final Action newGame = new AbstractAction(theString) {
+            
+            /** Auto generate serialVersion. */
+            private static final long serialVersionUID = 8248079210539758142L;
+
+            @Override 
+            public void actionPerformed(final ActionEvent theEvent) {
+            
+                myBoard.newGame();
+            }
+        };
+      
+        newGame.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
+        return newGame;
+    }
+    
+    /**
+     * Action to end the game. (incomplete)
+     * @param theString name of the Action.
+     * @return AbstractAction.
+     */
+    private Action endGame(final String theString) {
+        
+        final Action endGame = new AbstractAction(theString) {
+            
+            /** Auto generate serialVersion. */
+            private static final long serialVersionUID = 4588600296001293243L;
+
+            @Override 
+            public void actionPerformed(final ActionEvent theEvent) {
+            
+            
+            }
+        };
+      
+        endGame.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_E);
+        return endGame;
+    }
+    
+    /**
+     * Action to close the game.
+     * @param theString name of the Action
+     * @param theFrame close every components and the container included.
+     * @return AbstractAction.
+     */
+    private Action quitAction(final String theString, final JFrame theFrame) {
+        
+        final Action quitAction = new AbstractAction(theString) {
+            
+            /** Auto generate serialVersion. */
+            private static final long serialVersionUID = 2070587338032059286L;
+
+            @Override
+            public void actionPerformed(final ActionEvent theEvent) {
+                
+                theFrame.dispatchEvent(new WindowEvent(theFrame, 
+                                                       WindowEvent.WINDOW_CLOSING));
+            }
+        };
+        quitAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_Q);
+        return quitAction;
+    }
+    
+    /**
+     * Instruction will pop-up when user click on this button.
+     * @param theString name for the button.
+     * @return Action event of the butotn.
+     */
+    private Action aboutAction(final String theString) {
+        
+        final Action aboutAction = new AbstractAction(theString) {
+            
+            /** Auto generate serialVersion. */
+            private static final long serialVersionUID = 1228017523677948203L;
+
+            @Override 
+            public void actionPerformed(final ActionEvent theEvent) {
+            
+                                         
+                    JOptionPane.showMessageDialog(null, "Move Piece Left: A \n"
+                                    + "Move Piece Right: D \n"
+                                    + "Move Piece Down: S \n"
+                                    + "Rotate Piece: R \n"
+                                    + "Drop Piece Down: Space", "Controls Key: ", 
+                                    JOptionPane.INFORMATION_MESSAGE, TetrisGUI.TETRIS);
+            }
+        };
+      
+        aboutAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_B);
+        return aboutAction;
+    }
+    
+    /**
+     * Create a group of button to change size for the Game Board.
+     * @param theAction user can choose one button at the time.
+     */
+    public void createSizeButton(final AbstractAction theAction) {
+        
+        final JRadioButtonMenuItem rb = new JRadioButtonMenuItem(theAction);
+        myOptions.add(rb);
+        myButtonGroup.add(rb);
+    }
+    
+    @Override 
+    public void update(final Observable theObservale, final Object theObject) {
+        
+    }
+}

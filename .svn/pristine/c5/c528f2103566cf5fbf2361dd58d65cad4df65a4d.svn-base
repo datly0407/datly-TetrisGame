@@ -1,0 +1,217 @@
+/**
+ * TCSS 305 - Autumn 2016
+ * Assignment 6a - tetris
+ */
+
+package view;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
+
+/**
+ * Class represent the menu of the project.
+ * @author Dat Ly datly@uw.edu
+ * @version 12/02/2016
+ *
+ */
+public class TetrisMenuBar extends JMenuBar {
+    /** Name of the Pause Game button. */
+    private static final String PAUSE_GAME = "Pause Game";
+    /** Name of the New Game button. */
+    private static final String NEW_GAME = "New Game";
+    /** Name of the End Game button. */
+    private static final String END_GAME = "End Game";
+    /** Name of the Quit button. */
+    private static final String QUIT = "Quit";
+    /** Name of the About button. */
+    private static final String ABOUT = "About...";
+    /**
+     * Option menu for the user to change size of Game's Board.
+     */
+    private final JMenu myOptions;
+    /**
+     * Button group that make sure one button select at a time.
+     */
+    private final ButtonGroup myButtonGroup;
+    /**
+     * Pause game flag. It will let other components 
+     * know about the status of the game.
+     */
+    private boolean myPause; 
+    
+    /**
+     * Constructor initialize instance fields.
+     * @param theFrame Container which hold all the components.
+     */
+    public TetrisMenuBar(final JFrame theFrame) {
+        
+        super();
+        myOptions = new JMenu("Options");
+        myButtonGroup = new ButtonGroup();
+        myPause = false; 
+        setUpMenu(theFrame);
+    }
+    
+    /**
+     * Command method that will set up the view for the MenuBar.
+     * @param theFrame container of the game.
+     */
+    private void setUpMenu(final JFrame theFrame) {
+        
+        final JMenu menu = new JMenu("Menu");
+        menu.add(pauseGame(PAUSE_GAME));
+        menu.addSeparator();
+        menu.add(newGame(NEW_GAME));
+        menu.add(endGame(END_GAME));
+        menu.addSeparator();
+        menu.add(quitAction(QUIT, theFrame));
+        
+        final JMenu help = new JMenu("Help");
+        help.add(aboutAction(ABOUT));
+        
+        menu.setMnemonic(KeyEvent.VK_M);
+        myOptions.setMnemonic(KeyEvent.VK_O);
+        help.setMnemonic(KeyEvent.VK_H);
+        
+        add(menu);  
+        add(myOptions);
+        add(help);     
+    }
+    
+    /**
+     * Pause Action of the Game.
+     * @param theString name of the Action
+     * @return AbstractAction.
+     */
+    private Action pauseGame(final String theString) {
+        
+        final Action pauseGame = new AbstractAction(theString) {
+            
+            @Override 
+            public void actionPerformed(final ActionEvent theEvent) {
+                myPause = !myPause;
+                TetrisMenuBar.this.firePropertyChange("PauseGame", null, myPause);
+            }
+        };
+        
+        pauseGame.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_P);
+        return pauseGame;
+    }
+    /**
+     * Action to start new game.
+     * @param theString name of the Action.
+     * @return AbstractAction.
+     */
+    private Action newGame(final String theString) {
+        
+        final Action newGame = new AbstractAction(theString) {
+            
+            /** Auto generate serialVersion. */
+            private static final long serialVersionUID = 8248079210539758142L;
+
+            @Override 
+            public void actionPerformed(final ActionEvent theEvent) {
+            
+                TetrisMenuBar.this.firePropertyChange("NewGame", null, false);
+            }
+        };
+      
+        newGame.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
+        return newGame;
+    }
+    
+    /**
+     * Action to end the game. (incomplete)
+     * @param theString name of the Action.
+     * @return AbstractAction.
+     */
+    private Action endGame(final String theString) {
+        
+        final Action endGame = new AbstractAction(theString) {
+
+            @Override 
+            public void actionPerformed(final ActionEvent theEvent) {
+
+                TetrisMenuBar.this.firePropertyChange("EndGame", null, true);
+            }
+        };
+      
+        endGame.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_E);
+        return endGame;
+    }
+    
+    /**
+     * Action to close the game.
+     * @param theString name of the Action
+     * @param theFrame close every components and the container included.
+     * @return AbstractAction.
+     */
+    private Action quitAction(final String theString, final JFrame theFrame) {
+        
+        final Action quitAction = new AbstractAction(theString) {
+            
+            /** Auto generate serialVersion. */
+            private static final long serialVersionUID = 2070587338032059286L;
+
+            @Override
+            public void actionPerformed(final ActionEvent theEvent) {
+                
+                theFrame.dispatchEvent(new WindowEvent(theFrame, 
+                                                       WindowEvent.WINDOW_CLOSING));
+            }
+        };
+        quitAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_Q);
+        return quitAction;
+    }
+    
+    /**
+     * Instruction will pop-up when user click on this button.
+     * @param theString name for the button.
+     * @return Action event of the butotn.
+     */
+    private Action aboutAction(final String theString) {
+        
+        final Action aboutAction = new AbstractAction(theString) {
+            
+            /** Auto generate serialVersion. */
+            private static final long serialVersionUID = 1228017523677948203L;
+
+            @Override 
+            public void actionPerformed(final ActionEvent theEvent) {
+            
+                                         
+                JOptionPane.showMessageDialog(null, "Clear 1-3 lines worth 100 pts each. \n"
+                                    + "Clear 4 lines in a row worth 1000 pts. \n"
+                                    + "Clear 4 lines to level up. \n"
+                                    + "... \n"
+                                    + "...", "Scoring Algorithm: ", 
+                                    JOptionPane.INFORMATION_MESSAGE, TetrisGUI.TETRIS);
+            }
+        };
+      
+        aboutAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_B);
+        return aboutAction;
+    }
+    
+    /**
+     * Create a group of button to change size for the Game Board.
+     * @param theAction user can choose one button at the time.
+     */
+    public void createSizeButton(final AbstractAction theAction) {
+        
+        final JRadioButtonMenuItem rb = new JRadioButtonMenuItem(theAction);
+        myOptions.add(rb);
+        myButtonGroup.add(rb);
+    }
+    
+}

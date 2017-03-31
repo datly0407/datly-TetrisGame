@@ -1,0 +1,41 @@
+package listener;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import model.Board;
+
+public class KeyListener extends KeyAdapter {
+    
+    private final Board myBoard;
+    
+    public KeyListener(final Board theBoard) {
+        
+        super();
+        myBoard = theBoard;     
+    }
+    
+    @Override
+    public void keyPressed(final KeyEvent theEvent) {
+       
+        switch (theEvent.getKeyCode()) {
+            case KeyEvent.VK_A:
+                myBoard.left();
+                break;
+            case KeyEvent.VK_S:
+                myBoard.down();
+                break;
+            case KeyEvent.VK_D:
+                myBoard.right();
+                break;
+            case KeyEvent.VK_R:
+                myBoard.rotate();
+                break;
+            case KeyEvent.VK_SPACE:
+                myBoard.drop();
+                break;
+            
+            default:
+                break;
+        }
+    }
+}

@@ -1,0 +1,59 @@
+/**
+ * TCSS 305 - Autumn 2016
+ * Assignment 6a - tetris
+ */
+
+package listener;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import model.Board;
+
+/**
+ * Class that will listen to the KeyBoard event.
+ * @author Dat Ly datly@uw.edu
+ * @version 12/02/2016
+ *
+ */
+public class KeyListener extends KeyAdapter {
+    
+    /**
+     * Reference to the Board class.
+     */
+    private final Board myBoard;
+    
+    /**
+     * Constructor that initialize instance field.
+     * @param theBoard Board class.
+     */
+    public KeyListener(final Board theBoard) {
+        
+        super();
+        myBoard = theBoard;     
+    }
+    
+    @Override
+    public void keyPressed(final KeyEvent theEvent) {
+       
+        switch (theEvent.getKeyCode()) {
+            case KeyEvent.VK_A:
+                myBoard.left();
+                break;
+            case KeyEvent.VK_S:
+                myBoard.down();
+                break;
+            case KeyEvent.VK_D:
+                myBoard.right();
+                break;
+            case KeyEvent.VK_R:
+                myBoard.rotate();
+                break;
+            case KeyEvent.VK_SPACE:
+                myBoard.drop();
+                break;
+            
+            default:
+                break;
+        }
+    }
+}

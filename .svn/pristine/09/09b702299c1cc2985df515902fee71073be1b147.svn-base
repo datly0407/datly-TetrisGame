@@ -1,0 +1,134 @@
+/**
+ * TCSS 305 - Autumn 2016
+ * Assignment 6a - tetris
+ */
+
+package view;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+
+import model.Board;
+
+/**
+ * Class represent the menu of the project.
+ * @author Dat Ly datly@uw.edu
+ * @version 12/02/2016
+ *
+ */
+public class TetrisMenuBar extends JMenuBar implements Observer{
+    
+    /** Name of the New Game button. */
+    private static final String NEW_GAME = "New Game";
+    /** Name of the End Game button. */
+    private static final String END_GAME = "End Game";
+    /** Name of the Quit button. */
+    private static final String QUIT = "Quit";
+    /** Name of the About button. */
+    private static final String ABOUT = "About...";
+    /**
+     * Reference to Board class. 
+     */
+    private Board myBoard;
+    /**
+     * Constructor initialize instance fields.
+     * @param theFrame Container which hold all the components.
+     * @param theBoard represent Board class.
+     */
+    public TetrisMenuBar(final JFrame theFrame, final Board theBoard) {
+        
+        super();
+        myBoard = theBoard;
+        setUpMenu(theFrame);
+    }
+   
+    private void setUpMenu(final JFrame theFrame){
+        
+        final JMenu menu = new JMenu("Menu");
+        menu.add(newGame(NEW_GAME));
+        menu.add(endGame(END_GAME));
+        menu.addSeparator();
+        menu.add(quitAction(QUIT, theFrame));
+             
+        final JMenu help = new JMenu("Help");
+        help.add(aboutAction(ABOUT));
+        
+        add(menu);      
+        add(help);
+        
+    }
+    
+    private Action newGame(final String theString) {
+        
+        final Action newGame = new AbstractAction(theString) {
+            
+            @Override 
+            public void actionPerformed(final ActionEvent theEvent) {
+            
+                myBoard.newGame();
+            }
+        };
+      
+        newGame.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
+        return newGame;
+    }
+    
+    private Action endGame(final String theString) {
+        
+        final Action endGame = new AbstractAction(theString) {
+            
+            @Override 
+            public void actionPerformed(final ActionEvent theEvent) {
+            
+            
+            }
+        };
+      
+        endGame.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_E);
+        return endGame;
+    }
+    
+    private Action quitAction(final String theString, final JFrame theFrame) {
+        
+        final Action quitAction = new AbstractAction(theString) {
+            
+            @Override
+            public void actionPerformed(final ActionEvent theEvent) {
+                
+                theFrame.dispatchEvent(new WindowEvent(theFrame, 
+                                                       WindowEvent.WINDOW_CLOSING));
+            }
+        };
+        quitAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_Q);
+        return quitAction;
+    }
+    
+    private Action aboutAction(final String theString) {
+        
+        final Action aboutAction = new AbstractAction(theString) {
+            
+            @Override 
+            public void actionPerformed(final ActionEvent theEvent) {
+            
+            
+            }
+        };
+      
+        aboutAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_B);
+        return aboutAction;
+    }
+       
+    @Override 
+    public void update(final Observable theObservale, final Object theObject) {
+        
+    }
+}

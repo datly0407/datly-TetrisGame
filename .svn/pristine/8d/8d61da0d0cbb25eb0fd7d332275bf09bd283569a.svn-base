@@ -1,0 +1,97 @@
+/**
+ * TCSS 305 - Autumn 2016
+ * Assignment 6a - tetris
+ */
+
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JFrame;
+import javax.swing.event.MouseInputAdapter;
+
+import model.Board;
+
+/**
+ * Class represent the JFrame which is contain all 
+ * components of the program.
+ * @author Dat Ly datly@uw.edu
+ * @version 12/02/2016
+ *
+ */
+public class TetrisGUI extends JFrame {
+    
+    private static final Dimension DEFAULT_SIZE = new Dimension(505, 650);
+    
+    /**
+     * Reference Tetris Board class.
+     */
+    private final TetrisBoard myBoardDisplay;
+    /**
+     * Reference next piece preview class.
+     */
+    private final TetrisNextPiece myNextPieceDisplay;
+    /**
+     * Reference to the menu bar class.
+     */
+    private final TetrisMenuBar myMenuBar;
+    /**
+     * Reference to Board class.
+     */
+    private final Board myBoard;
+    
+    /**
+     * Constructor that will initialize instance fields.
+     */
+    public TetrisGUI() {
+        
+        super("TCSS 305 ---- TETRIS ----");
+        myBoard = new Board();
+        myBoardDisplay = new TetrisBoard(myBoard);
+        myNextPieceDisplay = new TetrisNextPiece();
+        myMenuBar = new TetrisMenuBar(this, myBoard);       
+    }
+    
+    /**
+     * Method call from method that will kick-off the program.
+     */
+    public void start() {
+        
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setJMenuBar(myMenuBar);
+        setMinimumSize(DEFAULT_SIZE);
+        add(myBoardDisplay, BorderLayout.CENTER);
+        add(myNextPieceDisplay, BorderLayout.EAST);
+        addMouseMotionListener(new ListenForMouseEvent());
+        final Toolkit kit = Toolkit.getDefaultToolkit();
+        setLocation(
+                    (int) ((kit.getScreenSize().getWidth() - this.getWidth()) / 2),
+                    (int) ((kit.getScreenSize().getHeight() - this.getHeight()) / 2));
+        
+        setVisible(true);  
+        startGame();
+    }
+    
+    /**
+     * Private method that will start the game immidiately when the GUI open.
+     */
+    private void startGame() {
+        
+        myBoard.addObserver(myBoardDisplay);
+        myBoard.addObserver(myNextPieceDisplay);
+        myBoard.newGame();
+    }
+    
+    private class ListenForMouseEvent extends MouseInputAdapter {
+        
+        @Override 
+        public void mouseDragged(final MouseEvent theEvent) {
+            
+            System.out.println(theEvent.getY());
+        }
+    }
+}
